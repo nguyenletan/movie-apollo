@@ -1,0 +1,26 @@
+{
+  "name": "movie-apollo",
+  "version": "1.0.0",
+  "description": "API Gateway - TMDB API",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon --inspect src/index.js"
+  },
+  "keywords": [
+    "movies",
+    "news",
+    "Apollo",
+    "GraphQL"
+  ],
+  "author": "nguyen letan",
+  "license": "MIT",
+  "dependencies": {
+    "apollo-datasource-rest": "^0.3.1",
+    "apollo-server": "^2.4.2",
+    "graphql": "^14.1.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.10"
+  }
+}
