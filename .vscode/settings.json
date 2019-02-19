@@ -1,0 +1,7 @@
+{
+  "appService.zipIgnorePattern": [
+    "node_modules{,/**}"
+  ],
+  "appService.defaultWebAppToDeploy": "/subscriptions/b108f752-4314-4576-9a31-1fa1d47c6baa/resourceGroups/appsvc_rg_linux_centralus/providers/Microsoft.Web/sites/movie-apollo-vs",
+  "appService.deploySubpath": ""
+}
