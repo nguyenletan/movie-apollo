@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "API Gateway - TMDB API",
   "main": "index.js",
-  "node": "11.x",
+  "node": "12.x",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon --inspect index.js"
@@ -17,11 +17,12 @@
   "author": "nguyen letan",
   "license": "MIT",
   "dependencies": {
-    "apollo-datasource-rest": "^0.3.1",
-    "apollo-server": "^2.4.2",
-    "graphql": "^14.1.1"
+    "apollo-datasource-rest": "^0.6.1",
+    "apollo-server": "^2.8.1",
+    "apollo-server-express": "^2.8.1",
+    "graphql": "^14.4.2"
   },
   "devDependencies": {
-    "nodemon": "^1.18.10"
+    "nodemon": "^1.19.1"
   }
 }

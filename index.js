@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+
 const TMDB = require("./tmdb");
 
 // This is a (sample) collection of books we'll be able to query
@@ -41,7 +42,7 @@ const typeDefs = gql`
     backdrop_path: String
     adult: Boolean
     overview: String
-    release_date: String
+    release_date: String,
   }
 
   # This "Discover_Movies" type can be used in other type declarations.
@@ -76,13 +77,13 @@ const typeDefs = gql`
     total_pages: Int
     results: [Discover_TVShow]
   }
-  
+
   # This "GenRes" type can be used in other type declarations.
   type Genre {
     id: Int
     name: String
   }
-  
+
   # This "ProductionCompany" type can be used in other type declarations.
   type ProductionCompany {
     id: Int
@@ -90,19 +91,19 @@ const typeDefs = gql`
     logo_path: String
     origin_country: String
   }
-  
+
   # This "ProductionCountry" type can be used in other type declarations.
   type ProductionCountry {
     iso_3166_1: String
     name: String
   }
-  
+
   # This "SpokenLanguage" type can be used in other type declarations.
   type SpokenLanguage {
     iso_639_1: String
     name: String
   }
-  
+
   # This "Movie" type can be used in other type declarions.
   type Movie {
     adult: Boolean
@@ -120,7 +121,7 @@ const typeDefs = gql`
     production_companies: [ProductionCompany]
     production_countries: [ProductionCountry]
     release_date: String
-    revenue: Int
+    revenue: String
     runtime: Int
     spoken_languages: [SpokenLanguage]
     status: String
@@ -130,8 +131,7 @@ const typeDefs = gql`
     vote_average: Float
     vote_count: Int
   }
-  
-  
+
   # This "EpisodeToAir" type can be used in other type declarions.
   type EpisodeToAir {
     air_date: String
@@ -146,7 +146,7 @@ const typeDefs = gql`
     vote_average: Float
     vote_count: Int
   }
-  
+
   # This "Network" type can be used in other type declarations.
   type Network {
     name: String
@@ -154,7 +154,7 @@ const typeDefs = gql`
     logo_path: String
     origin_country: String
   }
-  
+
   # This "Season" type can be used in other type declarations.
   type Season {
     air_date: String
@@ -165,7 +165,7 @@ const typeDefs = gql`
     poster_path: String
     season_number: Int
   }
-  
+
   # This "TVShow" type can be used in other type declarations.
   type TVShow {
     backdrop_path: String
@@ -196,7 +196,27 @@ const typeDefs = gql`
     vote_average: Float
     vote_count: Int
   }
-  
+
+  type Trailer {
+    id: String
+    iso_639_1: String
+    iso_3166_1: String
+    key: String
+    name: String
+    site: String
+
+    # Allowed Values: 360, 480, 720, 1080
+    size: Int
+
+    # Allowed Values: Trailer, Teaser, Clip, Featurette, Behind the Scenes, Bloopers
+    type: String
+  }
+
+  type TrailerList {
+    id: Int
+    results: [Trailer]
+  }
+
   # The "Query" type is the root of all GraphQL queries.
   # (A "Mutation" type will be covered later on.)
   type Query {
@@ -205,6 +225,8 @@ const typeDefs = gql`
     discoverTVShows(sort_by: String, language: String, page: Int): Discover_TVShows
     getMovieDetail(id: Int, language: String): Movie
     getTVShowDetail(id: Int, language: String): TVShow
+    getTrailers(movie_id: Int): TrailerList
+    getUpcommingMovies(page: Int): Discover_Movies
   }
 `;
 
@@ -213,14 +235,12 @@ const typeDefs = gql`
 const resolvers = {
   Query: {
     books: () => books,
-    discoverMovies: async (_, { sort_by, language, page }, { dataSources }) =>
-      dataSources.TMDB.discoverMovies(sort_by, language, page),
-    discoverTVShows: async (_, { sort_by, language, page }, { dataSources }) =>
-      dataSources.TMDB.discoverTVShows(sort_by, language, page),
-    getMovieDetail: async (_, { id, language }, { dataSources }) =>
-      dataSources.TMDB.getMovieDetail(id, language),
-    getTVShowDetail: async (_, { id, language }, { dataSources }) =>
-      dataSources.TMDB.getTvShowDetail(id, language)
+    discoverMovies: async (_, { sort_by, language, page }, { dataSources }) => dataSources.TMDB.discoverMovies(sort_by, language, page),
+    discoverTVShows: async (_, { sort_by, language, page }, { dataSources }) => dataSources.TMDB.discoverTVShows(sort_by, language, page),
+    getMovieDetail: async (_, { id, language }, { dataSources }) => dataSources.TMDB.getMovieDetail(id, language),
+    getTVShowDetail: async (_, { id, language }, { dataSources }) => dataSources.TMDB.getTvShowDetail(id, language),
+    getTrailers: async (_, { movie_id }, { dataSources }) => dataSources.TMDB.getTrailers(movie_id),
+    getUpcommingMovies: async (_, { page }, { dataSources }) => dataSources.TMDB.getUpcommingMovies(page)
   }
 };
 
